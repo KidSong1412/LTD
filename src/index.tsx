@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './style/index.scss';
+import { Image } from './components/Image/Image';
+
+export { Button } from './components/Button/Button';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Image url="https://img.mandudu.com/s/20190220225725624307.jpg" tip="安娜贝尔" width="200px" />
+    <Image url="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" tip="安娜贝尔" width="200px" lazy />  
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

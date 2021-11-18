@@ -1,0 +1,15 @@
+.lt-btn {
+  width: 50px;
+  height: 30px;
+  padding: 5px 10px;
+  color: $font-color;
+  font-size: 14px;
+  border: none;
+  background-color: $theme-color;
+  cursor: pointer;
+  overflow: hidden;
+  &:disabled {
+    background-color: $disabled-color;
+    pointer-events: none;
+  }
+}
