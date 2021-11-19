@@ -1,4 +1,4 @@
-import React, { FC, ImgHTMLAttributes, useRef } from 'react';
+import React, { FC, ImgHTMLAttributes, useRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
 type fitType = 'cover';
@@ -26,6 +26,8 @@ export const Image: FC<ImageProps> = (props) => {
     lazy,
     ...restProps
   } = props;
+  const [variableLazy, setVariableLazy] = useState(lazy);
+  const [alreadyImg, setAlreadyImg] = useState(false);
   const imgRef = useRef(null);
   console.log(restProps);
 
@@ -39,10 +41,42 @@ export const Image: FC<ImageProps> = (props) => {
     }
   }
 
+  useEffect(() => {
+    console.log((imgRef.current as any).offsetHeight);
+    // console.log(111);
+    isShow();
+    let timer: any;
+    window.addEventListener("scroll", () => {
+      clearTimeout(timer);
+      timer = setTimeout(isShow, 3000);
+    });
+    return () => {
+      window.removeEventListener("scroll", isShow);
+    }
+  })
+
+  const isShow = () => {
+    console.log((imgRef.current as any).offsetHeight);
+    // console.log((imgRef.current as any).outerHeight);
+    // console.log((imgRef.current as any).offsetTop);
+    // console.log(document.documentElement.clientHeight);
+    // console.log(document.body.scrollTop);
+    if (alreadyImg) {
+      return;
+    }
+    let lazyStatus = (imgRef.current as any).outerHeight + (imgRef.current as any).offsetTop > document.documentElement.clientHeight + document.documentElement.scrollTop;
+    // console.log(lazyStatus);
+    // console.log(variableLazy);
+    if (!lazyStatus) {
+      setVariableLazy(lazyStatus);
+      setAlreadyImg(true);
+    }
+  }
+
   return (
     <img
       className={classes}
-      src={url}
+      src={variableLazy && !alreadyImg ? 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.webjike.com%2Fupload%2Fimages%2F2018%2F4%2F7f47a94504cc79a5.gif&refer=http%3A%2F%2Fwww.webjike.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1639887607&t=278a4fd9c18227a1f782cae63129a95c' : url}
       alt={tip}
       width={width}
       style={{ objectFit: fit }}
