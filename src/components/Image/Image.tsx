@@ -1,5 +1,6 @@
-import React, { FC, ImgHTMLAttributes, useRef } from 'react';
+import React, { FC, ImgHTMLAttributes, useRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
+import _ from 'lodash';
 
 type fitType = 'cover';
 
@@ -26,8 +27,9 @@ export const Image: FC<ImageProps> = (props) => {
     lazy,
     ...restProps
   } = props;
+  const [variableLazy, setVariableLazy] = useState(lazy);
+  const alreadyImg: any = useRef(false)
   const imgRef = useRef(null);
-  console.log(restProps);
 
   const classes = classNames('lt-image', ClassName);
 
@@ -39,10 +41,36 @@ export const Image: FC<ImageProps> = (props) => {
     }
   }
 
+  useEffect(() => {
+    isShow();
+  // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener("scroll", _.debounce(isShow, 200), false);
+    return () => {
+      window.removeEventListener("scroll", _.debounce(isShow, 200));
+    }
+  // eslint-disable-next-line
+  }, [alreadyImg.current])
+
+  const isShow = () => {
+    console.log(alreadyImg.current);
+    if (alreadyImg.current) {
+      return;
+    }
+    let lazyStatus = (imgRef.current as any).offsetHeight + (imgRef.current as any).offsetTop > document.documentElement.clientHeight + document.documentElement.scrollTop;
+    console.log(222);
+    if (!lazyStatus) {
+      setVariableLazy(lazyStatus);
+      alreadyImg.current = true;
+    }
+  }
+
   return (
     <img
       className={classes}
-      src={url}
+      src={variableLazy && !alreadyImg.current ? 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.webjike.com%2Fupload%2Fimages%2F2018%2F4%2F7f47a94504cc79a5.gif&refer=http%3A%2F%2Fwww.webjike.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1639887607&t=278a4fd9c18227a1f782cae63129a95c' : url}
       alt={tip}
       width={width}
       style={{ objectFit: fit }}
