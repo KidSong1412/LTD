@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 import './style/index.scss';
-import { Image } from './components/Image/Image';
+import { Popup } from './components/Popup/Popup';
 
 export { Button } from './components/Button/Button';
+export { Image } from './components/Image/Image';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Image url="https://img.mandudu.com/s/20190220225725624307.jpg" tip="安娜贝尔" width="200px" />
-    <Image url="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" tip="安娜贝尔" width="200px" lazy />
+    <Popup content={<div><ul><li>你好</li><li>世界</li></ul><h1>你的名字</h1></div>} show={true} position="center" />
   </React.StrictMode>,
   document.getElementById('root')
 );
